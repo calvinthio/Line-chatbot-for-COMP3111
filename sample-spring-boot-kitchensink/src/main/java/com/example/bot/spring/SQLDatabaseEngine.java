@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.net.URISyntaxException;
+import java.io.IOException;
 import java.net.URI;
 
 @Slf4j
@@ -12,17 +13,27 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 	@Override
 	String search(String text) throws Exception {
 		//Write your code here
-//		String result = null;
-//		Connection connection = getConnection();
-//		PreparedStatement stmt = connection.prepareStatement(
-//"SELECT response FROM responsetable where keyword=?)");
-//		stmt.setString(1, text);
-//		ResultSet rs = stmt.executeQuery();
-//		result = rs.getString(1);
-//		rs.close();
-//		stmt.close(); 
-//		connection.close();
-		return null;
+		
+		String result = null;
+		Connection connection = getConnection();
+		PreparedStatement stmt = connection.prepareStatement("SELECT response FROM responsetable where keyword=?");
+		stmt.setString(1, text);
+		ResultSet rs = stmt.executeQuery();
+		
+		while(rs.next())
+		{
+			result = rs.getString(1);
+		} 
+		
+		rs.close();
+		stmt.close(); 
+		connection.close();
+		
+		
+		if (result != null)
+			return result;
+		throw new Exception("NOT FOUND");
+		
 	}
 	
 	
