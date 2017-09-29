@@ -16,15 +16,13 @@ public class SQLDatabaseEngine extends DatabaseEngine {
 		
 		String result = null;
 		Connection connection = getConnection();
-		PreparedStatement stmt = connection.prepareStatement("SELECT response FROM responsetable where keyword=?");
+		PreparedStatement stmt = connection.prepareStatement("SELECT response FROM responsetable where LOWER(keyword)=LOWER(?)");
 		stmt.setString(1, text);
 		ResultSet rs = stmt.executeQuery();
 		
 		
 		while(rs.next())
 		{
-			
-//			if (text.toLowerCase().equals(temporary.toLowerCase())) {}
 				result =  rs.getString(1);
 			
 		} 
